@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Honey Fried Chicken - Kasir</title>
+    <style>
+        /* Reset Dasar */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Container Utama */
+        .background {
+            width: 100%;
+            min-height: 100vh;
+            background: linear-gradient(hsl(199, 58%, 27%), #9CB080, #478B8D);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; 
+            flex-wrap: wrap; 
+            gap: 30px; 
+            padding: 40px;
+        }
+
+        /* Container Menu Produk */
+        .menu-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            flex: 2;
+            max-width: 800px;
+        }
+
+        /* Desain Kartu Produk (Desktop Mode) */
+        .kartu-produk {
+            background-color: #202940;
+            width: 100%; 
+            max-width: 240px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2); 
+            overflow: hidden; 
+            transition: transform 0.3s ease; 
+            text-align: center;
+            display: flex;
+            flex-direction: column; 
+        }
+
+        .kartu-produk:hover {
+            transform: translateY(-5px); 
+        }
+
+        .kartu-produk img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover; 
+            background-color: #202940; 
+            display: block;        
+        }
+
+        /* Area Teks */
+        .konten-produk {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .judul {
+            font-size: 18px;
+            color: #F3E4C9;
+            margin-bottom: 10px;
+        }
+
+        .harga {
+            font-size: 20px;
+            color: #76ABAE; 
+            margin-bottom: 20px;
+            font-weight: bold;
+            margin-top: auto; 
+        }
+
+        /* Desain Tombol */
+        .btn-beli {
+            width: 100%;
+            padding: 12px;
+            background-color: #233D4D; 
+            color: #F3E4C9;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-beli:hover {
+            background-color: #0A2947; 
+        }
+
+        /* =========================================
+           DESAIN PANEL KASIR (KERANJANG)
+           ========================================= */
+        .kasir-panel {
+            background-color: #fff;
+            color: #333;
+            width: 100%;
+            max-width: 350px;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            flex: 1;
+        }
+
+        .kasir-panel h2 {
+            text-align: center;
+            color: #233D4D;
+            margin-bottom: 20px;
+            border-bottom: 2px dashed #ccc;
+            padding-bottom: 10px;
+        }
+
+        .daftar-pesanan {
+            list-style: none;
+            margin-bottom: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .daftar-pesanan li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 14px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+        }
+
+        .item-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .item-nama { font-weight: bold; }
+        .item-harga { color: #888; font-size: 12px; }
+
+        .btn-hapus {
+            background-color: #e63946;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 8px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .total-container {
+            font-size: 18px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            color: #233D4D;
+        }
+
+        .btn-checkout {
+            background-color: #76ABAE;
+            color: #fff;
+        }
+
+        .btn-checkout:hover {
+            background-color: #55878a;
+        }
+
+        /* Layar HP */
+        @media (max-width: 768px) {
+            .background {
+                padding: 15px; 
+                gap: 15px;     
+            }
+            .menu-container {
+                gap: 15px;
+            }
+            .kartu-produk {
+                width: calc(50% - 7.5px); 
+                max-width: none; 
+            }
+            .kartu-produk img { height: 120px; }
+            .konten-produk { padding: 12px; }
+            .judul { font-size: 14px; }
+            .harga { font-size: 15px; margin-bottom: 10px; }
+            .btn-beli { padding: 8px; font-size: 12px; }
+            .kasir-panel { max-width: 100%; margin-top: 20px;}
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background">
+        
+        <div class="menu-container">
+            <div class="kartu-produk">
+                <img src="picture/ayam_geprek.jpg" alt="Ayam geprek + nasi">
+                <div class="konten-produk">
+                    <h2 class="judul">Ayam Geprek + Nasi</h2>
+                    <h3 class="harga">Rp 15.000</h3>
+                    <button class="btn-beli add-item" data-nama="Ayam Geprek + Nasi" data-harga="15000">Tambah</button>
+                </div>
+            </div> 
+
+            <div class="kartu-produk">
+                <img src="picture/rice_bowl.jpg" alt="rice bowl">
+                <div class="konten-produk">
+                    <h2 class="judul">Rice Bowl</h2>
+                    <h3 class="harga">Rp 13.000</h3>
+                    <button class="btn-beli add-item" data-nama="Rice Bowl" data-harga="13000">Tambah</button>
+                </div>
+            </div>
+
+            <div class="kartu-produk">
+                <img src="picture/mie_ayamgeprek.jpeg" alt=" mie ayam geprek">
+                <div class="konten-produk">
+                    <h2 class="judul">Mie Ayam Geprek</h2>
+                    <h3 class="harga">Rp 12.000</h3>
+                    <button class="btn-beli add-item" data-nama="Mie Ayam Geprek" data-harga="12000">Tambah</button>
+                </div>
+            </div>
+
+            <div class="kartu-produk">
+                <img src="picture/tahu_bakso.jpg" alt="tahu bakso">
+                <div class="konten-produk">
+                    <h2 class="judul">Tahu Goreng</h2>
+                    <h3 class="harga">Rp 2.000</h3>
+                    <button class="btn-beli add-item" data-nama="Tahu Goreng" data-harga="2000">Tambah</button>
+                </div>
+            </div>
+
+            <div class="kartu-produk">
+                <img src="picture/bakso_goreng.jpg" alt="bakso goreng">
+                <div class="konten-produk">
+                    <h2 class="judul">Bakso Goreng</h2>
+                    <h3 class="harga">Rp 2.000</h3>
+                    <button class="btn-beli add-item" data-nama="Bakso Goreng" data-harga="2000">Tambah</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="kasir-panel">
+            <h2>Struk Pesanan</h2>
+            <ul class="daftar-pesanan" id="list-keranjang">
+                </ul>
+            
+            <div class="total-container">
+                <span>Total:</span>
+                <span id="total-harga">Rp 0</span>
+            </div>
+            
+            <button class="btn-beli btn-checkout" id="btn-bayar">Bayar Sekarang</button>
+        </div>
+
+    </div>
+
+    <script>
+        // Array untuk menyimpan data pesanan
+        let keranjang = [];
+
+        // Menangkap elemen HTML
+        const tombolTambah = document.querySelectorAll('.add-item');
+        const listKeranjang = document.getElementById('list-keranjang');
+        const totalHargaEl = document.getElementById('total-harga');
+        const tombolBayar = document.getElementById('btn-bayar');
+
+        // Fungsi format Rupiah
+        const formatRupiah = (angka) => {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
+        };
+
+        // Event Listener untuk setiap tombol "Tambah"
+        tombolTambah.forEach(tombol => {
+            tombol.addEventListener('click', function() {
+                // Ambil data dari atribut HTML
+                const namaItem = this.getAttribute('data-nama');
+                const hargaItem = parseInt(this.getAttribute('data-harga'));
+
+                // Cek apakah item sudah ada di keranjang
+                const itemAda = keranjang.find(item => item.nama === namaItem);
+
+                if (itemAda) {
+                    itemAda.jumlah += 1; // Jika ada, tambah jumlahnya
+                } else {
+                    // Jika belum ada, masukkan sebagai item baru
+                    keranjang.push({
+                        nama: namaItem,
+                        harga: hargaItem,
+                        jumlah: 1
+                    });
+                }
+
+                renderKeranjang(); // Perbarui tampilan kasir
+            });
+        });
+
+        // Fungsi untuk memperbarui tampilan Struk/Keranjang
+        function renderKeranjang() {
+            listKeranjang.innerHTML = ''; // Kosongkan list sebelumnya
+            let total = 0;
+
+            keranjang.forEach((item, index) => {
+                const subtotal = item.harga * item.jumlah;
+                total += subtotal;
+
+                // Buat elemen list (li) untuk setiap pesanan
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <div class="item-info">
+                        <span class="item-nama">${item.nama} (x${item.jumlah})</span>
+                        <span class="item-harga">${formatRupiah(item.harga)}</span>
+                    </div>
+                    <div>
+                        <span style="font-weight:bold; margin-right: 10px;">${formatRupiah(subtotal)}</span>
+                        <button class="btn-hapus" onclick="hapusItem(${index})">X</button>
+                    </div>
+                `;
+                listKeranjang.appendChild(li);
+            });
+
+            // Update teks total harga
+            totalHargaEl.innerText = formatRupiah(total);
+        }
+
+        // Fungsi untuk menghapus item dari keranjang
+        function hapusItem(index) {
+            keranjang.splice(index, 1); // Hapus 1 elemen dari array berdasarkan index
+            renderKeranjang(); // Perbarui tampilan ulang
+        }
+
+        // Fitur Checkout / Bayar
+        tombolBayar.addEventListener('click', function() {
+            if (keranjang.length === 0) {
+                alert('Keranjang masih kosong, silakan pilih menu dulu!');
+                return;
+            }
+            
+            let totalBayar = totalHargaEl.innerText;
+            alert(`Terima kasih! Pembayaran Anda sebesar ${totalBayar} berhasil diproses.`);
+            
+            // Reset kasir setelah bayar
+            keranjang = [];
+            renderKeranjang();
+        });
+        
+    </script>
+</body>
+</html>
